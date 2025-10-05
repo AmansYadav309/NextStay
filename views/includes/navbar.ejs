@@ -1,0 +1,172 @@
+<style>
+    /* I've added this new rule for your logo's size */
+    .navbar-brand img {
+        height: 50px; /* You can adjust this value */
+        width: auto;
+    }
+    .logo {
+        height: 50px;
+        width: auto;
+    }
+
+    .nav-link_host {
+        color: black !important;
+        text-decoration: none;
+        padding: 0.2rem 1rem;
+        border: 1px solid rgb(232, 230, 230);
+        border-radius: 7rem;
+        transition: all 0.2s ease-in-out;
+        white-space: nowrap;
+    }
+
+    .nav-link_host:hover {
+        border-color: rgb(174, 174, 174);
+        background-color: rgb(242, 242, 242);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .nav-link_host p {
+        color: black !important;
+        margin: 0;
+        padding: 0.5rem;
+    }
+
+    /* /user */
+    .dropdown-menu {
+        min-width: 200px;
+    }
+
+    .custom-item {
+        border-radius: 8px;
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .custom-item:hover {
+        background: #f5f5f5;
+        transform: scale(1.03);
+    }
+
+    .dropdown-header {
+        font-size: 0.9rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* search bar */
+    .search-container {
+        flex-grow: 1;
+        max-width: 600px;
+    }
+
+    .search-bar input {
+        height: 42px;
+        border: 1px solid #ddd;
+        transition: all 0.3s ease;
+    }
+
+    .search-bar input:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.3);
+    }
+
+    .search-bar button {
+        height: 42px;
+        background: linear-gradient(135deg, #0d6efd, #0a58ca);
+        border: none;
+        transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .search-bar button:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #0a58ca, #084298);
+    }
+
+    #navbar-search {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    }
+
+    #navbar-search.sticky-search {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+</style>
+
+<nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="/">
+          <img class="logo" src="/images/logo.png" alt="NextStay Logo">  
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavAltMarkup">
+
+            <div class="navbar-nav">
+                <a class="nav-link" href="/listings">Explore</a>
+            </div>
+
+            <div id="navbar-search" class="navbar-nav flex-grow-1 justify-content-center px-4">
+                <form class="d-flex w-100" style="max-width: 500px;" role="search">
+                    <input class="form-control rounded-pill shadow-sm" type="search"
+                        placeholder="Search destinations..." aria-label="Search" />
+                    <button class="btn btn-primary rounded-pill ms-2 px-3 shadow-sm" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div class="navbar-nav d-flex flex-row align-items-center ms-auto">
+
+                <%# Check if we are on the landing page AND the user is NOT logged in %>
+                <% if (typeof onLandingPage !== 'undefined' && onLandingPage && !CurUser) { %>
+                
+                    <a href="/login" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/signin" class="btn btn-light">Sign Up</a>
+
+                <% } else { %>
+                
+                    <% if (CurUser) { %>
+                        <a class="nav-link_host me-3" href="/listings/new">Become a host</a>
+                    <% } %>
+
+                    <div class="dropdown">
+                        <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="user" width="36" height="36" class="rounded-circle border border-2 shadow-sm me-2">
+                            <span class="fw-semibold">
+                                <% if (CurUser) { %>
+                                    <i>@<%= CurUser.username %></i>
+                                <% } else { %>
+                                    <i>Guest</i>
+                                <% } %>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-3 p-3" aria-labelledby="userDropdown">
+                            <li class="mb-2">
+                                <div class="fw-bold text-muted small">
+                                    <% if (CurUser) { %>
+                                        Logged in as <%= CurUser.username %>
+                                    <% } else { %>
+                                        Welcome, Guest!
+                                    <% } %>
+                                </div>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <% if (CurUser) { %>
+                                <li><a class="dropdown-item custom-item" href="/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
+                            <% } else { %>
+                                <li><a class="dropdown-item custom-item" href="/signin"><i class="fa-solid fa-user-plus me-2"></i>SignUp</a></li>
+                                <li><a class="dropdown-item custom-item" href="/login"><i class="fa-solid fa-right-to-bracket me-2"></i>Login</a></li>
+                            <% } %>
+                        </ul>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</nav>

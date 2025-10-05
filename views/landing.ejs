@@ -1,0 +1,294 @@
+<% layout('/layouts/boilerplate.ejs') -%>
+
+<style>
+  /* General Styles */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+
+  body {
+    background: #f0f6ff;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  /* Hero Section */
+  .hero {
+    text-align: center;
+    padding: 100px 20px;
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #fff;
+  }
+
+  .hero h2 {
+    font-size: 48px;
+    margin-bottom: 20px;
+  }
+
+  .hero p {
+    font-size: 20px;
+    margin-bottom: 40px;
+  }
+
+  .search-box {
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    border-radius: 50px;
+    overflow: hidden;
+    width: 90%;
+    max-width: 700px;
+    margin: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .search-box input {
+    flex: 1;
+    border: none;
+    padding: 15px 25px;
+    font-size: 16px;
+    outline: none;
+  }
+
+  .search-box button {
+    background: #2563eb;
+    border: none;
+    color: #fff;
+    padding: 15px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+
+  .search-box button:hover {
+    background: #1e40af;
+  }
+
+  /* Destinations Section */
+  .destinations {
+    padding: 80px 60px;
+  }
+
+  .destinations h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 36px;
+    color: #1e3a8a;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+  }
+
+  .card h3 {
+    font-size: 20px;
+    margin: 15px;
+    color: #1e3a8a;
+  }
+
+  .card p {
+    margin: 0 15px 20px;
+    font-size: 14px;
+    color: #666;
+  }
+
+  /* Features Section */
+  .features {
+    background: #e0ecff;
+    padding: 80px 60px;
+    text-align: center;
+  }
+
+  .features h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #1e3a8a;
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+  }
+
+  .feature {
+    background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s;
+  }
+
+  .feature:hover {
+    transform: translateY(-10px);
+  }
+
+  .feature h3 {
+    margin-bottom: 15px;
+    font-size: 22px;
+    color: #2563eb;
+  }
+
+  /* Testimonials Section */
+  .testimonials {
+    padding: 80px 60px;
+    text-align: center;
+  }
+
+  .testimonials h2 {
+    font-size: 36px;
+    margin-bottom: 40px;
+    color: #1e3a8a;
+  }
+
+  .testimonial {
+    max-width: 600px;
+    margin: 20px auto;
+    background: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    border-left: 5px solid #2563eb;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .testimonial p {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 15px;
+  }
+
+  .testimonial h4 {
+    margin-top: 15px;
+    font-size: 16px;
+    color: #1e3a8a;
+    font-weight: 600;
+  }
+
+  /* Call to Action (CTA) Section */
+  .cta {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: #fff;
+    text-align: center;
+    padding: 80px 20px;
+  }
+
+  .cta h2 {
+    font-size: 42px;
+    margin-bottom: 20px;
+  }
+
+  .cta button {
+    background: #fff;
+    color: #2563eb;
+    border: none;
+    padding: 15px 40px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .cta button:hover {
+    background: #f0f6ff;
+    transform: scale(1.05);
+  }
+</style>
+
+<section id="hero-section" class="hero">
+    <h2>Find Your Next Adventure</h2>
+    <p>Book unique stays and explore exciting destinations worldwide.</p>
+    <div class="search-box">
+        <input type="text" placeholder="Where do you want to go?">
+        <button>Search</button>
+    </div>
+</section>
+
+<section class="destinations">
+  <h2>Popular Destinations</h2>
+  <div class="grid">
+    <div class="card">
+      <img src="https://tse3.mm.bing.net/th/id/OIP.H6mra3MsCbrTsHSFWLQ5mwHaEo?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Beach">
+      <h3>Tropical Beach</h3>
+      <p>Relax at the most beautiful beaches with crystal clear water.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1551632811-561732d1e306?w=500" alt="Mountain">
+      <h3>Mountain Escape</h3>
+      <p>Breathe fresh air and enjoy a peaceful getaway in the mountains.</p>
+    </div>
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=500" alt="City">
+      <h3>Urban Life</h3>
+      <p>Discover vibrant city stays with endless nightlife and activities.</p>
+    </div>
+    <div class="card">
+      <img src="https://seoimgak.mmtcdn.com/blog/sites/default/files/images/1_19.jpg" alt="Village">
+      <h3>Cozy Village</h3>
+      <p>Experience the warmth of small towns and local hospitality.</p>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <h2>Why Choose Us?</h2>
+  <div class="feature-grid">
+    <div class="feature">
+      <h3>Verified Stays</h3>
+      <p>Every listing is verified to ensure safety and comfort.</p>
+    </div>
+    <div class="feature">
+      <h3>Affordable Prices</h3>
+      <p>Find the best deals without compromising quality.</p>
+    </div>
+    <div class="feature">
+      <h3>24/7 Support</h3>
+      <p>We’re here to assist you anytime, anywhere.</p>
+    </div>
+    <div class="feature">
+      <h3>Global Reach</h3>
+      <p>Thousands of destinations available across the globe.</p>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <h2>What Our Users Say</h2>
+  <div class="testimonial">
+    <p>"This platform made my honeymoon trip unforgettable. The service was seamless and the stay was perfect!"</p>
+    <h4>- Sarah J.</h4>
+  </div>
+  <div class="testimonial">
+    <p>"I found hidden gems in Europe thanks to this site. Highly recommended for all adventure seekers."</p>
+    <h4>- Mark T.</h4>
+  </div>
+</section>
+
+<section class="cta">
+  <h2>Ready for Your Next Trip?</h2>
+  <button>Explore Stays</button>
+</section>

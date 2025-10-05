@@ -1,0 +1,54 @@
+<% layout('/layouts/authLayout.ejs') -%>
+
+<div class="container ">
+  <div class="row mt-5">
+    <div class="col-md-6 offset-md-3">
+      <div class="auth-box shadow p-4 " >
+        <h2 class="text-center mb-4">User Signin Form</h2>
+
+        <form action="/signin" method="POST" novalidate class="needs-validation">
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              class="form-control"
+              required
+            />
+            <div class="valid-feedback">Looks good!</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              name="email"
+              id="email"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              required
+            />
+          </div>
+
+          <button class="btn btn-submit w-100">Sign In</button>
+        </form>
+
+        <p class="text-center mt-3">
+          Don’t have an account? <a href="/login">Log in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
