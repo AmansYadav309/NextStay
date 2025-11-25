@@ -29,7 +29,7 @@ const reviews = require("./routes/reviews.js")
 const user = require("./routes/users.js");
 
 
-const port = process.env.PORT || 8080;
+// const port = process.env.PORT || 8080;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -39,14 +39,14 @@ app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
 const sessionoption = {
-  secret: "mysupersecret",
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  }
+  secret: process.env.SECRET || "mysupersecret", // IMPORTANT: Use env variable
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000
+  }
 }
 
 app.use(session(sessionoption));
@@ -66,7 +66,7 @@ app.use((req,res,next)=>{
 }) 
 
 main().then((res)=>{
-    console.log("connected sussefully")
+    // console.log("connected sussefully")
 })
 .catch(err => console.log(err));
 
@@ -105,7 +105,8 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(port, () => {
-    console.log("server is working ");
-});
+// app.listen(port, () => {
+//     console.log("server is working ");
+// });
 
+module.exports = app;
