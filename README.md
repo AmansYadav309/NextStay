@@ -1,49 +1,108 @@
-# NextStay
+# NextStay 🏡
 
-A full-stack web application for property listings with reviews and user authentication.
+NextStay is a full-stack web application designed for travelers to discover and book perfect accommodations worldwide. Built with Node.js and Express, it provides a seamless and intuitive platform for both guests searching for their next stay and hosts wanting to list their properties.
 
-## Technologies Used
+---
 
-- **Backend**: Express.js
-- **Database**: MongoDB with Mongoose
-- **Frontend**: EJS templating engine
-- **Authentication**: Passport.js
-- **Image Storage**: Cloudinary
-- **Maps**: Mapbox
+## ✨ Key Features
 
-## Setup Instructions
+- **👤 User Authentication:** Secure user registration and login system with persistent sessions.  
+- **🏠 Full CRUD for Listings:** Authenticated users can **C**reate, **R**ead, **U**pdate, and **D**elete their own property listings.  
+- **⭐ Reviews and Ratings:** Users can leave reviews and star ratings on listings they've visited.  
+- **☁️ Cloud Image Uploads:** Image uploads are handled by and stored in the cloud using Cloudinary.  
+- **🗺️ Interactive Maps:** Each listing displays its location on an interactive map, powered by Mapbox.  
+- **Responsive Design:** A clean and modern UI built with Bootstrap that works on all screen sizes.  
 
-1. Clone the repository
-2. Install dependencies:
-   ```bash
-   pnpm install
-   ```
-3. Create a `.env` file with the following variables:
-   ```
-   CLOUDINARY_URL=your_cloudinary_url
-   MAPBOX_TOKEN=your_mapbox_token
-   SESSION_SECRET=your_session_secret
-   MONGODB_URI=your_mongodb_uri
-   ```
-4. Run the application:
-   ```bash
-   pnpm start
-   ```
+---
 
-## Deployment
+## 🛠️ Tech Stack
 
-This application is configured for deployment on Vercel with pnpm support.
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB with Mongoose  
+- **Frontend:** EJS (Embedded JavaScript templates), HTML, CSS  
+- **Styling:** Bootstrap  
+- **Authentication:** Passport.js for session management  
+- **Services:** Cloudinary (Image Hosting), Mapbox (Geocoding & Maps)  
+- **Package Manager:** NPM  
 
-## Environment Variables
+---
 
-For deployment, make sure to set the following environment variables:
-- `CLOUDINARY_URL`
-- `MAPBOX_TOKEN`
-- `SESSION_SECRET`
-- `MONGODB_URI`
-- `NODE_ENV` (set to "production")
+## 🚀 Getting Started
 
-## Scripts
+Follow these steps to run NextStay locally.
 
-- `pnpm start`: Start the production server
-- `pnpm dev`: Start the development server with nodemon
+### Prerequisites
+
+Make sure you have Node.js, npm, and MongoDB installed on your machine.
+
+- [Node.js](https://nodejs.org/)  
+- [MongoDB](https://www.mongodb.com/try/download/community)
+
+### Installation
+
+1. **Clone the repository**
+    ```bash
+    git clone https://github.com/AmansYadav309/NextStay.git
+    ```
+
+2. **Navigate to the project directory**
+    ```bash
+    cd NextStay
+    ```
+
+3. **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+4. **Set up Environment Variables**  
+   Create a `.env` file in the root of the project. Example:
+    ```env
+    # MongoDB Connection URL
+    DB_URL="your_mongodb_connection_string"
+
+    # Session Secret
+    SECRET="somesupersecretkey"
+
+    # Cloudinary Credentials
+    CLOUDINARY_CLOUD_NAME="your_cloud_name"
+    CLOUDINARY_KEY="your_cloud_api_key"
+    CLOUDINARY_SECRET="your_cloud_api_secret"
+
+    # Mapbox Access Token
+    MAPBOX_TOKEN="your_mapbox_access_token"
+
+    # Server Port
+    PORT=8080
+    ```
+
+---
+
+### 🗄️ Database Setup
+
+1. **Connect MongoDB**  
+   The app automatically connects to the MongoDB database specified in your `.env` file using Mongoose.  
+   If the database does not exist, it will be created automatically.
+
+2. **(Optional) Seed the Database**  
+   To populate the database with sample listings:
+    ```bash
+    node init/index.js
+    ```
+   This script uses data from `init/data.js` and adds example listings for testing.
+
+---
+
+### 💻 Running the Application
+
+Start the server with:
+
+```bash
+nodemon app.js
+
+---
+
+## ✍️ Author
+
+- **Aman Yadav** - [GitHub Profile](https://github.com/AmansYadav309)
+
