@@ -56,21 +56,26 @@ Make sure you have Node.js, npm, and MongoDB installed on your machine.
     ```
 
 4. **Set up Environment Variables**  
-   Create a `.env` file in the root of the project. Example:
+   Create a `.env` file in the root of the project. You can copy the `.env.example` file as a template:
+    ```bash
+    cp .env.example .env
+    ```
+   
+   Then update the values in `.env` with your actual credentials:
     ```env
     # MongoDB Connection URL
-    DB_URL="your_mongodb_connection_string"
+    MONGODB_URI="your_mongodb_connection_string"
 
     # Session Secret
     SECRET="somesupersecretkey"
 
     # Cloudinary Credentials
-    CLOUDINARY_CLOUD_NAME="your_cloud_name"
-    CLOUDINARY_KEY="your_cloud_api_key"
-    CLOUDINARY_SECRET="your_cloud_api_secret"
+    CLOUD_NAME="your_cloud_name"
+    CLOUD_API_KRY="your_cloud_api_key"
+    CLOUD_API_SECRET="your_cloud_api_secret"
 
     # Mapbox Access Token
-    MAPBOX_TOKEN="your_mapbox_access_token"
+    MAP_TOKEN="your_mapbox_access_token"
 
     # Server Port
     PORT=8080
