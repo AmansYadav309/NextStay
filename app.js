@@ -65,14 +65,44 @@ app.use((req,res,next)=>{
   next();
 }) 
 
-main().then((res)=>{
-    // console.log("connected sussefully")
-})
-.catch(err => console.log(err));
+// --- VERCEL CONNECTION CACHING LOGIC ---
+// Use a global variable to cache the database connection across function calls.
+let cachedDb = null;
 
-async function main() {
-  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wonderlust');
+async function connectToDatabase() {
+    // 1. If the connection is already cached, return it immediately.
+    if (cachedDb) {
+        console.log("Using cached DB connection.");
+        return cachedDb;
+    }
+
+    // 2. Get the connection URL from Vercel environment variables.
+    const dbUrl = process.env.MONGODB_URI;
+
+    if (!dbUrl) {
+        throw new Error("MONGODB_URI environment variable is not set!");
+    }
+
+    // 3. Establish a new connection.
+    const conn = await mongoose.connect(dbUrl, {
+        // These options are usually unnecessary in modern Mongoose but keep for reference
+        // useNewUrlParser: true, 
+        // useUnifiedTopology: true,
+    });
+    
+    // 4. Cache the connection for future function invocations.
+    cachedDb = conn; 
+    console.log("Established new DB connection and cached it.");
+    return conn;
 }
+
+// Immediately invoke the connection logic.
+connectToDatabase().then(() => {
+    console.log("Mongoose connection established.");
+}).catch(err => {
+    console.error("FATAL Mongoose connection error:", err);
+});
+// ----------------------------------------
 
 // This might be in app.js or routes/user.js
 app.get("/", (req, res) => {
