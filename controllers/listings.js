@@ -12,10 +12,10 @@ const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
 
 
-module.exports.index= async(req,res)=>{
- const alllist= await listing .find({})
- res.render("listings/index.ejs", {alllist});
-}
+module.exports.index = async (req, res) => {
+    const alllist = await listing.find({}).sort({ _id: -1 });
+    res.render("listings/index.ejs", { alllist });
+};
 
 
 module.exports.create = async (req, res, next) => {
@@ -34,7 +34,7 @@ module.exports.create = async (req, res, next) => {
   const savedListing = await newlist.save();
   console.log(savedListing);
 
-  req.flash("success", "New listing Added successfully");
+  req.flash("success", "New listing Added Nextstay");
   res.redirect("/listings");
 };
 

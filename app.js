@@ -29,7 +29,7 @@ const reviews = require("./routes/reviews.js")
 const user = require("./routes/users.js");
 
 
-const port = 8080;
+const port = process.env.PORT || 8080;
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -71,7 +71,7 @@ main().then((res)=>{
 .catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/wonderlust');
+  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/wonderlust');
 }
 
 // This might be in app.js or routes/user.js
@@ -105,7 +105,7 @@ app.use((err, req, res, next) => {
 });
 
 
-app.listen(8080, () => {
+app.listen(port, () => {
     console.log("server is working ");
 });
 

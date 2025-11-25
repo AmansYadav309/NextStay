@@ -1,0 +1,30 @@
+{
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": [
+          "public/**",
+          "views/**",
+          "models/**",
+          "controllers/**",
+          "routes/**",
+          "utils/**",
+          "middleware.js",
+          "schema.js",
+          "cloudConfig.js"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.js"
+    }
+  ],
+  "engines": {
+    "pnpm": "9.x"
+  }
+}
