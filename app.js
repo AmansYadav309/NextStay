@@ -9,6 +9,7 @@ require('dotenv').config()
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const MongoStore = require("connect-mongo");
 const listing = require("./models/listing");
 const ejs = require("ejs");
 const path = require("path");
@@ -38,15 +39,26 @@ app.use(express.urlencoded({extended : true }))
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
+const store = MongoStore.create({
+  mongoUrl: process.env.MONGODB_URI,
+  secret: process.env.SECRET || "mysupersecret",
+  touchAfter: 24 * 3600 // time period in seconds
+});
+
+store.on("error", function (e) {
+  console.log("SESSION STORE ERROR", e);
+});
+
 const sessionoption = {
-  secret: process.env.SECRET || "mysupersecret", // IMPORTANT: Use env variable
-  resave: false,
-  saveUninitialized: true,
-  cookie: {
-    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-    httpOnly: true,
-    maxAge: 7 * 24 * 60 * 60 * 1000
-  }
+  store: store,
+  secret: process.env.SECRET || "mysupersecret", // IMPORTANT: Use env variable
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000
+  }
 }
 
 app.use(session(sessionoption));
