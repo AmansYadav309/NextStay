@@ -100,10 +100,46 @@ Make sure you have Node.js, npm, and MongoDB installed on your machine.
 
 ### 💻 Running the Application
 
-Start the server with:
+For development:
 
 ```bash
-nodemon app.js
+npm run dev
+```
+
+For production:
+
+```bash
+npm start
+```
+
+---
+
+## 🚀 Deployment
+
+This application is ready for deployment on platforms like Vercel, Heroku, or other Node.js hosting services.
+
+### Deploy to Vercel
+
+1. Push your code to a GitHub repository
+2. Go to [Vercel](https://vercel.com) and connect your GitHub account
+3. Import your project from GitHub
+4. Add your environment variables in the Vercel dashboard:
+   - `MONGODB_URI`
+   - `SECRET`
+   - `CLOUDINARY_CLOUD_NAME`
+   - `CLOUDINARY_KEY`
+   - `CLOUDINARY_SECRET`
+   - `MAP_TOKEN`
+5. Deploy!
+
+### Environment Variables for Production
+
+Make sure to set these environment variables in your production environment:
+
+- `NODE_ENV=production`
+- `MONGODB_URI` - Your MongoDB Atlas connection string
+- `SECRET` - A strong secret key for sessions
+- `PORT` - Port number (usually set by the hosting platform)
 
 ---
 

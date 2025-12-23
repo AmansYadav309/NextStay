@@ -39,9 +39,11 @@ app.use(express.urlencoded({extended : true }))
 app.use(methodOverride("_method"));
 app.engine('ejs', ejsMate);
 
-const store = MongoStore.create({
+const store = MongoStore.default.create({
   mongoUrl: process.env.MONGODB_URI,
-  secret: process.env.SECRET || "mysupersecret",
+  crypto: {
+    secret: process.env.SECRET || "mysupersecret"
+  },
   touchAfter: 24 * 3600 // time period in seconds
 });
 
@@ -53,10 +55,11 @@ const sessionoption = {
   store: store,
   secret: process.env.SECRET || "mysupersecret", // IMPORTANT: Use env variable
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   cookie: {
     expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Set to true in production
     maxAge: 7 * 24 * 60 * 60 * 1000
   }
 }
@@ -77,44 +80,50 @@ app.use((req,res,next)=>{
   next();
 }) 
 
-// --- VERCEL CONNECTION CACHING LOGIC ---
-// Use a global variable to cache the database connection across function calls.
-let cachedDb = null;
-
+// Database Connection
 async function connectToDatabase() {
-    // 1. If the connection is already cached, return it immediately.
-    if (cachedDb) {
-        console.log("Using cached DB connection.");
-        return cachedDb;
-    }
-
-    // 2. Get the connection URL from Vercel environment variables.
     const dbUrl = process.env.MONGODB_URI;
 
     if (!dbUrl) {
         throw new Error("MONGODB_URI environment variable is not set!");
     }
 
-    // 3. Establish a new connection.
-    const conn = await mongoose.connect(dbUrl, {
-        // These options are usually unnecessary in modern Mongoose but keep for reference
-        // useNewUrlParser: true, 
-        // useUnifiedTopology: true,
-    });
-    
-    // 4. Cache the connection for future function invocations.
-    cachedDb = conn; 
-    console.log("Established new DB connection and cached it.");
-    return conn;
+    try {
+        const conn = await mongoose.connect(dbUrl, {
+            // Modern Mongoose options
+            serverSelectionTimeoutMS: 30000, // 30 seconds timeout
+            socketTimeoutMS: 45000, // 45 seconds timeout
+            maxPoolSize: 10, // Maintain up to 10 socket connections
+            // Note: For modern Mongoose, useNewUrlParser and useUnifiedTopology are no longer needed
+        });
+        
+        console.log("Mongoose connection established.");
+        
+        // Handle database connection events
+        mongoose.connection.on('error', (err) => {
+            console.error('MongoDB connection error:', err);
+        });
+        
+        mongoose.connection.on('disconnected', () => {
+            console.log('MongoDB disconnected');
+        });
+        
+        // Graceful shutdown
+        process.on('SIGINT', async () => {
+            await mongoose.connection.close();
+            console.log('MongoDB connection closed through app termination');
+            process.exit(0);
+        });
+        
+        return conn;
+    } catch (error) {
+        console.error("FATAL Mongoose connection error:", error);
+        process.exit(1); // Exit the process if DB connection fails
+    }
 }
 
-// Immediately invoke the connection logic.
-connectToDatabase().then(() => {
-    console.log("Mongoose connection established.");
-}).catch(err => {
-    console.error("FATAL Mongoose connection error:", err);
-});
-// ----------------------------------------
+// Connect to database
+connectToDatabase();
 
 // This might be in app.js or routes/user.js
 app.get("/", (req, res) => {
@@ -147,8 +156,28 @@ app.use((err, req, res, next) => {
 });
 
 
-// app.listen(port, () => {
-//     console.log("server is working ");
-// });
+const PORT = process.env.PORT || 8080;
+
+// Only start the server if this file is run directly (not imported)
+if (require.main === module) {
+  const server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+
+  // Graceful shutdown handling
+  process.on('SIGTERM', () => {
+    console.log('SIGTERM received, shutting down gracefully');
+    server.close(() => {
+      console.log('Process terminated');
+    });
+  });
+
+  process.on('SIGINT', () => {
+    console.log('SIGINT received, shutting down gracefully');
+    server.close(() => {
+      console.log('Process terminated');
+    });
+  });
+}
 
 module.exports = app;

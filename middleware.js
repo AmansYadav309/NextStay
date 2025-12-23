@@ -8,8 +8,8 @@ const expressError = require("./utils/expressError");
 module.exports.isLogedin  = (req,res,next) =>{
     if(!req.isAuthenticated()){
       req.session.redirectUrl = req.originalUrl;
-      req.flash("error", "You must login first")
-     return res.redirect("/login");
+      req.flash("error", "You must login first");
+      return res.redirect("/login");
   }
   next();
 }
@@ -26,7 +26,7 @@ module.exports.IsOwner =  async(req,res,next)=>{
    let {id}= req.params;
       const listings  = await listing.findById(id);
       if( !listings.owner._id.equals( res.locals.CurUser._id)){
-        req.flash("error" , "you don't have acces ")
+        req.flash("error" , "you don't have acces ");
             return res.redirect(`/listings/${id}`)
       }
       next()
@@ -36,7 +36,7 @@ module.exports.isReviewAuthor =  async(req,res,next)=>{
    let {id , review_id}= req.params;
       const review = await Reviews.findById(review_id);
       if( !review.author.equals( res.locals.CurUser._id)){
-        req.flash("error" , "you don't have acces ")
+        req.flash("error" , "you don't have acces ");
             return res.redirect(`/listings/${id}`)
       }
       next()
